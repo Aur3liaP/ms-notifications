@@ -3,6 +3,9 @@ import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  console.log(process.env.MONGO_USER);
+  console.log(process.env.MONGO_PASSWORD);
+  console.log(process.env.MONGO_DB_NAME);
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
@@ -13,5 +16,6 @@ async function bootstrap() {
     },
   );
   await app.listen();
+
 }
 bootstrap();
