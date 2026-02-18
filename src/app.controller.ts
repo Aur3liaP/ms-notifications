@@ -13,4 +13,5 @@ export class AppController {
 		  {id: 2, name:"", date : new Date()},
 	  ]
   }
+
 }
