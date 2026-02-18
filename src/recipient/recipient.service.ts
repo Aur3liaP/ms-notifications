@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Recipient, RecipientDocument } from 'src/schemas/recipient.schema';
@@ -15,7 +16,7 @@ export class RecipientService {
       external_id: externalId.toString(),
     });
     if (!recipient)
-      throw new NotFoundException(`Recipient ${externalId} not found`);
+      throw new RpcException(`Recipient ${externalId} not found`);
     return recipient;
   }
 

@@ -21,8 +21,8 @@ export class Notification {
   @Prop({ required: true, enum: ['sent', 'delivered', 'read', 'unread', 'failed'] })
   status: string;
 
-  @Prop({ required: true, enum: ['push', 'email', 'sms', 'inApp', 'webhook'] })
-  channel: string;
+  @Prop({ required: true, enum: ['push', 'email', 'sms', 'inApp', 'webhook'], type : String })
+  channel: string[];
 
   @Prop({
     required: true,
@@ -30,14 +30,12 @@ export class Notification {
     ref: 'Template',
   })
   template_id:string;
-
-  @Prop()
-  urlAction?: string;
-
+  
   @Prop({ type: Object })
   metadata: {
     sourceType: string; // event, pipeline, quota...
     source_id: string;
+    urlAction?: string;
     extra?: object; // données libres si besoin ex:eventName,dates...
   };
 
