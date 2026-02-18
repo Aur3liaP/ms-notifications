@@ -21,7 +21,7 @@ export class Recipient {
     default: { enabledChannels: [], enabledTypes: [] },
   })
   preferences: {
-    enabledChannel: string[];
+    enabledChannels: string[];
     enabledTypes: string[];
   };
 }
