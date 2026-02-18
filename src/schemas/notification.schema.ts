@@ -10,7 +10,7 @@ export class Notification {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Recipient',
   })
-  recipient_id: mongoose.Schema.Types.ObjectId;
+  recipient_id: string;
 
   @Prop({ required: true })
   type: string; // ex: system | event | alert | reminder...
@@ -18,7 +18,7 @@ export class Notification {
   @Prop({ required: true, enum: ['low', 'medium', 'high'] })
   priority: string;
 
-  @Prop({ required: true, enum: ['sent', 'delivered', 'read', 'failed'] })
+  @Prop({ required: true, enum: ['sent', 'delivered', 'read', 'unread', 'failed'] })
   status: string;
 
   @Prop({ required: true, enum: ['push', 'email', 'sms', 'inApp', 'webhook'] })
@@ -29,7 +29,7 @@ export class Notification {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Template',
   })
-  template_id: mongoose.Schema.Types.ObjectId;
+  template_id:string;
 
   @Prop()
   urlAction?: string;
