@@ -13,7 +13,7 @@ export class NotificationService {
   constructor(
     @InjectModel(Notification.name)
     private notificationModel: Model<NotificationDocument>,
-    private readonly recipientService: RecipientService, 
+    private readonly recipientService: RecipientService,
   ) {}
 
   async findByRecipientId(payload: {
@@ -25,7 +25,8 @@ export class NotificationService {
   }): Promise<Notification[]> {
     const { externalId, page = 1, limit = 10, status, type } = payload;
 
-    const recipient = await this.recipientService.findRecipientByExternalId(externalId)
+    const recipient =
+      await this.recipientService.findRecipientByExternalId(externalId);
 
     const filter: Record<string, any> = { recipient_id: recipient._id };
     if (status) filter.status = status;
@@ -49,7 +50,8 @@ export class NotificationService {
   }
 
   async markAllAsRead(externalId: string): Promise<{ count: number }> {
-    const recipient = await this.recipientService.findRecipientByExternalId(externalId)
+    const recipient =
+      await this.recipientService.findRecipientByExternalId(externalId);
 
     const result = await this.notificationModel
       .updateMany(
@@ -62,9 +64,13 @@ export class NotificationService {
   }
 
   async getUnreadCount(externalId: string): Promise<{ count: number }> {
-    const recipient = await this.recipientService.findRecipientByExternalId(externalId)
+    const recipient =
+      await this.recipientService.findRecipientByExternalId(externalId);
     const count = await this.notificationModel
-      .countDocuments({ recipient_id: recipient._id.toString(), status: { $ne: 'read' } })
+      .countDocuments({
+        recipient_id: recipient._id.toString(),
+        status: { $ne: 'read' },
+      })
       .exec();
 
     return { count };
@@ -95,5 +101,9 @@ export class NotificationService {
 
   async delete(id: string): Promise<Notification | null> {
     return this.notificationModel.findByIdAndDelete(id).exec();
+  }
+
+  async deleteAll(): Promise<void> {
+    await this.notificationModel.deleteMany({}).exec();
   }
 }

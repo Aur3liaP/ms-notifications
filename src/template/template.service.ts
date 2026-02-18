@@ -28,4 +28,8 @@ export class TemplateService {
   async delete(id: string): Promise<Template | null> {
     return this.templateModel.findByIdAndDelete(id).exec();
   }
+
+  async deleteAll(): Promise<void> {
+    await this.templateModel.deleteMany({}).exec();
+  }
 }

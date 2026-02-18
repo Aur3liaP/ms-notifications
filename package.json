@@ -21,7 +21,8 @@
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "docker:reset": "docker-compose down -v && docker-compose up -d && sleep 5 && npm run setup",
-    "setup": "npm i && docker-compose up -d && sleep 5 && npm run start:dev"
+    "setup": "npm i && docker-compose up -d && sleep 5 && npm run start:dev",
+    "seed": "ts-node -r tsconfig-paths/register src/seeder/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

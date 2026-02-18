@@ -43,4 +43,8 @@ export class RecipientService {
   async delete(id: string): Promise<Recipient | null> {
     return this.recipientModel.findByIdAndDelete(id).exec();
   }
+
+  async deleteAll(): Promise<void> {
+    await this.recipientModel.deleteMany({}).exec();
+  }
 }
