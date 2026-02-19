@@ -35,6 +35,12 @@ export class TemplateService {
     }
   }
 
+  async findByName(name: string): Promise<Template & { _id: Types.ObjectId }> {
+    const template = await this.templateModel.findOne({ name }).exec();
+    if (!template) throw new RpcException(`Template ${name} not found`);
+    return template;
+  }
+
   // ------------ Basic CRUD -------------------------------------
   async findAll(): Promise<Template[]> {
     return this.templateModel.find().exec();
@@ -42,9 +48,8 @@ export class TemplateService {
 
   async findById(id: string): Promise<Template & { _id: Types.ObjectId }> {
     const template = await this.templateModel.findById(id).exec();
-    if (!template)
-      throw new RpcException(`Template ${id} not found`);
-    return template
+    if (!template) throw new RpcException(`Template ${id} not found`);
+    return template;
   }
 
   async create(data: Partial<Template>): Promise<Template> {

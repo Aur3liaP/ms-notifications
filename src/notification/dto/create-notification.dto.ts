@@ -11,7 +11,7 @@ export class CreateNotificationDto {
   external_id: string;
 
   @IsString()
-  template_id: string;
+  template_name: string;
 
   @IsString()
   type: string;

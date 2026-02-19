@@ -5,6 +5,7 @@ import { Notification } from 'src/schemas/notification.schema';
 import { NotificationResponseDto } from './dto/notification-response.dto';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
+import { NotificationFiltersDto } from './dto/notification-filters.dto';
 
 @Controller()
 export class NotificationController {
@@ -13,13 +14,7 @@ export class NotificationController {
   @MessagePattern('GET_NOTIFICATIONS_BY_RECIPIENT')
   async getByRecipient(
     @Payload()
-    payload: {
-      externalId: string;
-      page: number;
-      limit: number;
-      status?: string;
-      channel?: string;
-    },
+    payload: NotificationFiltersDto,
   ): Promise<NotificationResponseDto[]> {
     return this.notificationService.findByRecipientId(payload);
   }

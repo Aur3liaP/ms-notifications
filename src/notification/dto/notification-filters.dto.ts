@@ -19,6 +19,10 @@ export class NotificationFiltersDto {
 
   @IsOptional()
   @IsString()
+  type?: string;
+
+  @IsOptional()
+  @IsString()
   status?: string;
 
   @IsOptional()

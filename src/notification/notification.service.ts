@@ -26,17 +26,19 @@ export class NotificationService {
   async findByRecipientId(
     payload: NotificationFiltersDto,
   ): Promise<NotificationResponseDto[]> {
-    const { externalId, page = 1, limit = 10, status, channel } = payload;
+    const { externalId, page = 1, limit = 10, status, type, channel } = payload;
 
     const recipient =
       await this.recipientService.findRecipientByExternalId(externalId);
 
     const filter: Record<string, any> = { recipient_id: recipient._id };
     if (status) filter.status = status;
+    if (type) filter.type = type;
     if (channel) filter.channel = channel;
 
     const notifications = await this.notificationModel
       .find(filter)
+      .populate('template_id')
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();
@@ -90,9 +92,9 @@ export class NotificationService {
     );
 
     // Check existance template
-    const template = await this.templateService.findById(data.template_id);
+    const template = await this.templateService.findByName(data.template_name)
     if (!template) {
-      throw new RpcException(`Template ${data.template_id} not found`);
+      throw new RpcException(`Template ${data.template_name} not found`);
     }
 
     if (template.metadata?.variables) {
@@ -151,7 +153,11 @@ export class NotificationService {
   }
 
   async findById(id: string): Promise<NotificationResponseDto | null> {
-    const notification = await this.notificationModel.findById(id).exec();
+    const notification = await this.notificationModel
+      .findById(id)
+      .populate('template_id')
+      .exec();
+    if (!notification) throw new RpcException(`Notification ${id} not found`);
     return NotificationMapper.toDto(notification);
   }
 

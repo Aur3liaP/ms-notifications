@@ -30,7 +30,7 @@ async function bootstrap() {
 
   // 3. Seed Templates
   const templates = await Promise.all(
-    templateData.map((data) => templateService.create(data)),
+    templateData.map((data) => templateService.create(data as any)),
   );
   console.log(`✅ Created ${templates.length} templates`);
 
@@ -56,8 +56,8 @@ async function bootstrap() {
       const { external_id, template_name, ...notifData } = data;
       return notificationService.create({
         ...notifData,
-        recipient_id: recipient_id.toString(),
-        template_id: template_id.toString(),
+        external_id,
+        template_name: template_name,
       });
     }),
   );
