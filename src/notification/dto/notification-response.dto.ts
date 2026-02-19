@@ -1,8 +1,12 @@
 export class NotificationResponseDto {
   id: string;
+  title: string;
+  description: string;
   type: string;
-  priority: string;
+  channel: string;
   status: string;
-  channel: string[];
-  metadata: object;
+  priority: string;
+  metadata?: object;
+  created_at: Date;
+  updated_at: Date;
 }

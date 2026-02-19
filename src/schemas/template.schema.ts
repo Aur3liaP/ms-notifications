@@ -20,8 +20,15 @@ export class Template {
   @Prop({ required: true })
   content: string ; // texte ou html(mail)
 
-  @Prop({ type: Object})
-  metadata?: Record<string, any>; //par ex eventName, date...
+  @Prop({ type: Object })
+  metadata?: {
+    variables: {
+      [key: string]: {
+        type: 'string' | 'number' | 'date' | 'boolean';
+        required: boolean;
+      };
+    };
+  }; //par ex eventName, date...
 }
 
 export const TemplateSchema = SchemaFactory.createForClass(Template);

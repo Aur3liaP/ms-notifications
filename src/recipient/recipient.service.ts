@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Recipient, RecipientDocument } from 'src/schemas/recipient.schema';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class RecipientService {
     private recipientModel: Model<RecipientDocument>,
   ) {}
 
-  async findRecipientByExternalId(externalId: string) {
+  async findRecipientByExternalId(externalId: string): Promise<Recipient & { _id: Types.ObjectId }> {
     const recipient = await this.recipientModel.findOne({
       external_id: externalId.toString(),
     });

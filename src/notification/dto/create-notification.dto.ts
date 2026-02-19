@@ -1,8 +1,17 @@
-import { IsString, IsEnum, IsOptional, IsObject, IsDateString } from 'class-validator';
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  IsObject,
+  IsDateString,
+} from 'class-validator';
 
 export class CreateNotificationDto {
   @IsString()
-  recipient_id: string;
+  external_id: string;
+
+  @IsString()
+  template_id: string;
 
   @IsString()
   type: string;
@@ -10,20 +19,14 @@ export class CreateNotificationDto {
   @IsEnum(['low', 'medium', 'high'])
   priority: string;
 
-  @IsEnum(['push', 'email', 'sms', 'inApp', 'webhook'])
-  channel: string;
-
-  @IsString()
-  template_id: string;
-
-  @IsOptional()
-  @IsString()
-  urlAction?: string;
+  @IsEnum(['sent', 'delivered', 'read', 'unread', 'failed'])
+  status?: string;
 
   @IsObject()
   metadata: {
     sourceType: string;
     source_id: string;
+    urlAction?: string;
     extra?: object;
   };
 

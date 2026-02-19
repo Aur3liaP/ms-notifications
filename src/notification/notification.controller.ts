@@ -3,6 +3,8 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { NotificationService } from './notification.service';
 import { Notification } from 'src/schemas/notification.schema';
 import { NotificationResponseDto } from './dto/notification-response.dto';
+import { CreateNotificationDto } from './dto/create-notification.dto';
+import { UpdateNotificationDto } from './dto/update-notification.dto';
 
 @Controller()
 export class NotificationController {
@@ -16,7 +18,7 @@ export class NotificationController {
       page: number;
       limit: number;
       status?: string;
-      type?: string;
+      channel?: string;
     },
   ): Promise<NotificationResponseDto[]> {
     return this.notificationService.findByRecipientId(payload);
@@ -39,6 +41,11 @@ export class NotificationController {
     return this.notificationService.getUnreadCount(externalId);
   }
 
+  @MessagePattern('CREATE_NOTIFICATION')
+  async create(@Payload() data: CreateNotificationDto): Promise<Notification> {
+    return this.notificationService.create(data);
+  }
+
   // ------------ Basic CRUD -------------------------------------
 
   @MessagePattern('GET_NOTIFICATIONS')
@@ -59,21 +66,15 @@ export class NotificationController {
     return this.notificationService.findById(id);
   }
 
-  // TODO : Faire create
-  @MessagePattern('CREATE_NOTIFICATION')
-  async create(@Payload() data: Partial<Notification>): Promise<Notification> {
-    return this.notificationService.create(data);
-  }
-
   @MessagePattern('UPDATE_NOTIFICATION')
   async update(
-    @Payload() payload: { id: string; data: Partial<NotificationResponseDto> },
+    @Payload() payload: { id: string; data: UpdateNotificationDto },
   ): Promise<Notification | null> {
     return this.notificationService.update(payload.id, payload.data);
   }
 
   @MessagePattern('DELETE_NOTIFICATION')
-  async delete(@Payload() id: string): Promise<NotificationResponseDto | null> {
+  async delete(@Payload() id: string): Promise<Notification | null> {
     return this.notificationService.delete(id);
   }
 }

@@ -1,28 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { RecipientService } from 'src/recipient/recipient.service';
 import {
   Notification,
   NotificationDocument,
 } from 'src/schemas/notification.schema';
-import { RecipientDocument } from 'src/schemas/recipient.schema';
 import { NotificationFiltersDto } from './dto/notification-filters.dto';
 import { NotificationMapper } from './mapper/notification.mapper';
 import { NotificationResponseDto } from './dto/notification-response.dto';
+import { TemplateService } from 'src/template/template.service';
+import { CreateNotificationDto } from './dto/create-notification.dto';
+import { RpcException } from '@nestjs/microservices';
+import { UpdateNotificationDto } from './dto/update-notification.dto';
 
 @Injectable()
 export class NotificationService {
   constructor(
     @InjectModel(Notification.name)
     private notificationModel: Model<NotificationDocument>,
-    private readonly recipientService: RecipientService, 
+    private readonly recipientService: RecipientService,
+    private readonly templateService: TemplateService,
   ) {}
 
-  async findByRecipientId(payload: NotificationFiltersDto): Promise<NotificationResponseDto[]> {
+  async findByRecipientId(
+    payload: NotificationFiltersDto,
+  ): Promise<NotificationResponseDto[]> {
     const { externalId, page = 1, limit = 10, status, channel } = payload;
 
-    const recipient = await this.recipientService.findRecipientByExternalId(externalId)
+    const recipient =
+      await this.recipientService.findRecipientByExternalId(externalId);
 
     const filter: Record<string, any> = { recipient_id: recipient._id };
     if (status) filter.status = status;
@@ -46,11 +53,12 @@ export class NotificationService {
       )
       .exec();
 
-      return NotificationMapper.toDto(notification);
+    return NotificationMapper.toDto(notification);
   }
 
   async markAllAsRead(externalId: string): Promise<{ count: number }> {
-    const recipient = await this.recipientService.findRecipientByExternalId(externalId)
+    const recipient =
+      await this.recipientService.findRecipientByExternalId(externalId);
 
     const result = await this.notificationModel
       .updateMany(
@@ -63,12 +71,64 @@ export class NotificationService {
   }
 
   async getUnreadCount(externalId: string): Promise<{ count: number }> {
-    const recipient = await this.recipientService.findRecipientByExternalId(externalId)
+    const recipient =
+      await this.recipientService.findRecipientByExternalId(externalId);
     const count = await this.notificationModel
-      .countDocuments({ recipient_id: recipient._id.toString(), status: { $ne: 'read' } })
+      .countDocuments({
+        recipient_id: recipient._id.toString(),
+        status: { $ne: 'read' },
+      })
       .exec();
 
     return { count };
+  }
+
+  async create(data: CreateNotificationDto): Promise<Notification> {
+    // Check existance recipient
+    const recipient = await this.recipientService.findRecipientByExternalId(
+      data.external_id,
+    );
+
+    // Check existance template
+    const template = await this.templateService.findById(data.template_id);
+    if (!template) {
+      throw new RpcException(`Template ${data.template_id} not found`);
+    }
+
+    if (template.metadata?.variables) {
+      await this.templateService.validateTemplateData(
+        template,
+        data.metadata?.extra || {},
+      );
+    }
+
+    // Check channel autorisé
+    if (!recipient.preferences.enabledChannels.includes(template.channel)) {
+      throw new RpcException(
+        `Channel "${template.channel}" is not enabled for recipient ${data.external_id}. ` + // ← template.channel, pas data.channel
+          `Allowed channels: ${recipient.preferences.enabledChannels.join(', ')}`,
+      );
+    }
+
+    // Check  type notif autorisées
+    if (!recipient.preferences.enabledTypes.includes(data.type)) {
+      throw new RpcException(
+        `Type "${data.type}" is not enabled for recipient ${data.external_id}`,
+      );
+    }
+
+    const notification = await this.notificationModel.create({
+      recipient_id: recipient._id.toString(),
+      template_id: template._id.toString(),
+      type: data.type,
+      priority: data.priority,
+      status: data.status || 'unread',
+      channel: template.channel,
+      metadata: data.metadata,
+      scheduled_at: data.scheduled_at,
+    });
+
+    return notification;
   }
 
   // ------------ Basic CRUD -------------------------------------
@@ -87,7 +147,7 @@ export class NotificationService {
       .limit(limit)
       .exec();
 
-      return NotificationMapper.toDtoArray(notifications);
+    return NotificationMapper.toDtoArray(notifications);
   }
 
   async findById(id: string): Promise<NotificationResponseDto | null> {
@@ -95,25 +155,20 @@ export class NotificationService {
     return NotificationMapper.toDto(notification);
   }
 
-    // TODO : Faire create
-  async create(data: Partial<Notification>): Promise<Notification> {
-    return this.notificationModel.create(data);
-  }
-
   async update(
     id: string,
-    data: Partial<NotificationResponseDto>,
+    data: UpdateNotificationDto,
   ): Promise<Notification | null> {
     return this.notificationModel
       .findByIdAndUpdate(id, data, { new: true })
       .exec();
   }
 
-  async delete(id: string): Promise<NotificationResponseDto | null> {
+  async delete(id: string): Promise<Notification | null> {
     return this.notificationModel.findByIdAndDelete(id).exec();
   }
 
-   async deleteAll(): Promise<void> {
+  async deleteAll(): Promise<void> {
     await this.notificationModel.deleteMany({}).exec();
   }
 }

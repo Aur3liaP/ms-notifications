@@ -18,19 +18,22 @@ export class Notification {
   @Prop({ required: true, enum: ['low', 'medium', 'high'] })
   priority: string;
 
-  @Prop({ required: true, enum: ['sent', 'delivered', 'read', 'unread', 'failed'] })
+  @Prop({
+    required: true,
+    enum: ['sent', 'delivered', 'read', 'unread', 'failed'],
+  })
   status: string;
 
-  @Prop({ required: true, enum: ['push', 'email', 'sms', 'inApp', 'webhook'], type : [String] })
-  channel: string[];
+  @Prop({ required: true, enum: ['push', 'email', 'sms', 'inApp', 'webhook'] })
+  channel: string;
 
   @Prop({
     required: true,
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Template',
   })
-  template_id:string;
-  
+  template_id: string;
+
   @Prop({ type: Object })
   metadata: {
     sourceType: string; // event, pipeline, quota...
@@ -39,7 +42,7 @@ export class Notification {
     extra?: object; // données libres si besoin ex:eventName,dates...
   };
 
-  @Prop()
+  @Prop({ default: () => new Date() })
   scheduled_at?: Date;
 }
 
