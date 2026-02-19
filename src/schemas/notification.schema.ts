@@ -21,7 +21,7 @@ export class Notification {
   @Prop({ required: true, enum: ['sent', 'delivered', 'read', 'unread', 'failed'] })
   status: string;
 
-  @Prop({ required: true, enum: ['push', 'email', 'sms', 'inApp', 'webhook'], type : String })
+  @Prop({ required: true, enum: ['push', 'email', 'sms', 'inApp', 'webhook'], type : [String] })
   channel: string[];
 
   @Prop({
