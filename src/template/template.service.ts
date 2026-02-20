@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { RpcBadRequestException, RpcNotFoundException } from 'src/common/rpc-exceptions';
 import { Template, TemplateDocument } from 'src/schemas/template.schema';
 
 @Injectable()
@@ -21,14 +21,14 @@ export class TemplateService {
 
       // Check des required
       if (varConfig.required && (value === undefined || value === null)) {
-        throw new RpcException(
+        throw new RpcBadRequestException(
           `Variable "${varName}" is required for template "${template.name}"`,
         );
       }
 
       // Check des types
       if (value !== undefined && typeof value !== varConfig.type) {
-        throw new RpcException(
+        throw new RpcBadRequestException(
           `Variable "${varName}" must be of type "${varConfig.type}"`,
         );
       }
@@ -37,7 +37,7 @@ export class TemplateService {
 
   async findByName(name: string): Promise<Template & { _id: Types.ObjectId }> {
     const template = await this.templateModel.findOne({ name }).exec();
-    if (!template) throw new RpcException(`Template ${name} not found`);
+    if (!template) throw new RpcNotFoundException(`Template ${name} not found`);
     return template;
   }
 
@@ -48,7 +48,7 @@ export class TemplateService {
 
   async findById(id: string): Promise<Template & { _id: Types.ObjectId }> {
     const template = await this.templateModel.findById(id).exec();
-    if (!template) throw new RpcException(`Template ${id} not found`);
+    if (!template) throw new RpcNotFoundException(`Template ${id} not found`);
     return template;
   }
 

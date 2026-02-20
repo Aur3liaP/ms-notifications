@@ -11,8 +11,8 @@ import { NotificationMapper } from './mapper/notification.mapper';
 import { NotificationResponseDto } from './dto/notification-response.dto';
 import { TemplateService } from 'src/template/template.service';
 import { CreateNotificationDto } from './dto/create-notification.dto';
-import { RpcException } from '@nestjs/microservices';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
+import { RpcBadRequestException, RpcNotFoundException } from 'src/common/rpc-exceptions';
 
 @Injectable()
 export class NotificationService {
@@ -94,7 +94,7 @@ export class NotificationService {
     // Check existance template
     const template = await this.templateService.findByName(data.template_name)
     if (!template) {
-      throw new RpcException(`Template ${data.template_name} not found`);
+      throw new RpcNotFoundException(`Template ${data.template_name} not found`);
     }
 
     if (template.metadata?.variables) {
@@ -106,7 +106,7 @@ export class NotificationService {
 
     // Check channel autorisé
     if (!recipient.preferences.enabledChannels.includes(template.channel)) {
-      throw new RpcException(
+      throw new RpcBadRequestException(
         `Channel "${template.channel}" is not enabled for recipient ${data.external_id}. ` + // ← template.channel, pas data.channel
           `Allowed channels: ${recipient.preferences.enabledChannels.join(', ')}`,
       );
@@ -114,7 +114,7 @@ export class NotificationService {
 
     // Check  type notif autorisées
     if (!recipient.preferences.enabledTypes.includes(data.type)) {
-      throw new RpcException(
+      throw new RpcBadRequestException(
         `Type "${data.type}" is not enabled for recipient ${data.external_id}`,
       );
     }
@@ -157,7 +157,7 @@ export class NotificationService {
       .findById(id)
       .populate('template_id')
       .exec();
-    if (!notification) throw new RpcException(`Notification ${id} not found`);
+    if (!notification) throw new RpcNotFoundException(`Notification ${id} not found`);
     return NotificationMapper.toDto(notification);
   }
 
