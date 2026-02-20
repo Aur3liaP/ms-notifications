@@ -9,7 +9,7 @@ export class NotificationMapper {
     return {
       id: notification._id,
       title: notification.template_id.title,
-      description: renderedContent,
+      content: renderedContent,
       type: notification.type,
       priority: notification.priority,
       status: notification.status,
