@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { RpcNotFoundException } from 'src/common/rpc-exceptions';
 import { Recipient, RecipientDocument } from 'src/schemas/recipient.schema';
+import { CreateRecipientDto } from './dto/create-recipient.dto';
 
 @Injectable()
 export class RecipientService {
@@ -11,13 +12,33 @@ export class RecipientService {
     private recipientModel: Model<RecipientDocument>,
   ) {}
 
-  async findRecipientByExternalId(externalId: string): Promise<Recipient & { _id: Types.ObjectId }> {
+  async findRecipient(
+    externalId: string,
+    source : string
+  ): Promise<Recipient & { _id: Types.ObjectId }> {
     const recipient = await this.recipientModel.findOne({
-      external_id: externalId.toString(),
+      external_id: externalId.toString(), source
     });
     if (!recipient)
-      throw new RpcNotFoundException(`Recipient ${externalId} not found`);
+      throw new RpcNotFoundException(`Recipient ${externalId} not found for source ${source}`);
     return recipient;
+  }
+
+  async create(data: CreateRecipientDto): Promise<Recipient> {
+    const exists = await this.recipientModel.findOne({
+      external_id: data.external_id,
+      source: data.source,
+    });
+
+    if (!exists) {
+      return await this.recipientModel.create(data);
+    }
+
+    return exists;
+  }
+
+  async findAllBySource(source: string): Promise<Recipient[]> {
+    return this.recipientModel.find({source}).exec();
   }
 
   async findAll(): Promise<Recipient[]> {
@@ -26,10 +47,6 @@ export class RecipientService {
 
   async findById(id: string): Promise<Recipient | null> {
     return this.recipientModel.findById(id).exec();
-  }
-
-  async create(data: Partial<Recipient>): Promise<Recipient> {
-    return this.recipientModel.create(data);
   }
 
   async update(

@@ -13,6 +13,9 @@ export class Notification {
   recipient_id: string;
 
   @Prop({ required: true })
+  source: string; // altivent, pipeline, quota...
+
+  @Prop({ required: true })
   type: string; // ex: system | event | alert | reminder...
 
   @Prop({ required: true, enum: ['low', 'medium', 'high'] })
@@ -36,7 +39,7 @@ export class Notification {
 
   @Prop({ type: Object })
   metadata: {
-    sourceType: string; // event, pipeline, quota...
+    sourceType: string; 
     source_id: string;
     urlAction?: string;
     extra?: object; // données libres si besoin ex:eventName,dates...
@@ -47,3 +50,7 @@ export class Notification {
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification);
+
+NotificationSchema.index(
+  { source: 1, recipient_id: 1 }
+);

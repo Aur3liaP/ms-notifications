@@ -26,14 +26,14 @@ export class NotificationController {
 
   @MessagePattern('MARK_ALL_AS_READ')
   async markAllAsRead(
-    @Payload() externalId: string,
+    @Payload() payload: { externalId: string; source: string }
   ): Promise<{ count: number }> {
-    return this.notificationService.markAllAsRead(externalId);
+    return this.notificationService.markAllAsRead(payload);
   }
 
   @MessagePattern('GET_UNREAD_COUNT')
-  async getUnreadCount(@Payload() externalId: string) {
-    return this.notificationService.getUnreadCount(externalId);
+  async getUnreadCount(@Payload() payload: { externalId: string; source: string }) {
+    return this.notificationService.getUnreadCount(payload);
   }
 
   @MessagePattern('CREATE_NOTIFICATION')

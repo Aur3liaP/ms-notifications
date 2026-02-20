@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { RecipientService } from './recipient.service';
 import { Recipient } from 'src/schemas/recipient.schema';
+import { CreateRecipientDto } from './dto/create-recipient.dto';
 
 @Controller()
 export class RecipientController {
@@ -12,13 +13,18 @@ export class RecipientController {
     return this.recipientService.findAll();
   }
 
+  @MessagePattern('GET_RECIPIENTS_BY_SOURCE')
+  async getAllBySource(source : string): Promise<Recipient[]> {
+    return this.recipientService.findAllBySource(source);
+  }
+
   @MessagePattern('GET_RECIPIENT')
   async getOne(@Payload() id: string): Promise<Recipient | null> {
     return this.recipientService.findById(id);
   }
 
   @MessagePattern('CREATE_RECIPIENT')
-  async create(@Payload() data: Partial<Recipient>): Promise<Recipient> {
+  async create(@Payload() data: CreateRecipientDto): Promise<Recipient> {
     return this.recipientService.create(data);
   }
 

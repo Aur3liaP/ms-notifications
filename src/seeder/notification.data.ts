@@ -1,6 +1,7 @@
 export const notificationData = [
   {
     external_id: '6',
+    source: 'Altivent',
     template_name: 'welcome',
     type: 'system',
     status: 'unread',
@@ -14,6 +15,7 @@ export const notificationData = [
   },
   {
     external_id: '6',
+    source: 'Altivent',
     template_name: 'participation-accepted',
     type: 'participation',
     status: 'read',
@@ -31,6 +33,7 @@ export const notificationData = [
   },
   {
     external_id: '7',
+    source: 'Altivent',
     template_name: 'event-reminder',
     type: 'participation',
     status: 'unread',
@@ -49,6 +52,7 @@ export const notificationData = [
   },
   {
     external_id: '8',
+    source: 'Altivent',
     template_name: 'event-cancelled',
     type: 'event',
     status: 'read',
@@ -66,6 +70,7 @@ export const notificationData = [
   },
   {
     external_id: '9',
+    source: 'Altivent',
     template_name: 'event-updated',
     type: 'event',
     status: 'unread',
@@ -83,6 +88,7 @@ export const notificationData = [
   },
   {
     external_id: '10',
+    source: 'Altivent',
     template_name: 'event-announcement',
     type: 'event',
     status: 'unread',
@@ -100,6 +106,7 @@ export const notificationData = [
   },
   {
     external_id: '11',
+    source: 'Altivent',
     template_name: 'welcome',
     type: 'system',
     status: 'read',
@@ -113,6 +120,7 @@ export const notificationData = [
   },
   {
     external_id: '12',
+    source: 'Altivent',
     template_name: 'event-reminder',
     type: 'participation',
     status: 'unread',
@@ -131,6 +139,7 @@ export const notificationData = [
   },
   {
     external_id: '13',
+    source: 'Altivent',
     template_name: 'event-announcement',
     type: 'event',
     status: 'read',
@@ -148,6 +157,7 @@ export const notificationData = [
   },
   {
     external_id: '14',
+    source: 'Altivent',
     template_name: 'participation-accepted',
     type: 'participation',
     status: 'unread',
@@ -165,6 +175,7 @@ export const notificationData = [
   },
   {
     external_id: '15',
+    source: 'Altivent',
     template_name: 'event-updated',
     type: 'event',
     status: 'unread',
@@ -182,6 +193,7 @@ export const notificationData = [
   },
   {
     external_id: '16',
+    source: 'Altivent',
     template_name: 'event-cancelled',
     type: 'event',
     status: 'read',
@@ -199,6 +211,7 @@ export const notificationData = [
   },
   {
     external_id: '17',
+    source: 'Altivent',
     template_name: 'welcome',
     type: 'system',
     status: 'unread',
@@ -212,6 +225,7 @@ export const notificationData = [
   },
   {
     external_id: '18',
+    source: 'Altivent',
     template_name: 'event-announcement',
     type: 'event',
     status: 'unread',
@@ -229,6 +243,7 @@ export const notificationData = [
   },
   {
     external_id: '19',
+    source: 'Altivent',
     template_name: 'event-reminder',
     type: 'participation',
     status: 'read',
@@ -247,6 +262,7 @@ export const notificationData = [
   },
   {
     external_id: '20',
+    source: 'Altivent',
     template_name: 'participation-accepted',
     type: 'participation',
     status: 'unread',
@@ -264,6 +280,7 @@ export const notificationData = [
   },
   {
     external_id: '2',
+    source: 'Altivent',
     template_name: 'rating-received',
     type: 'event',
     status: 'unread',
@@ -282,6 +299,7 @@ export const notificationData = [
   },
   {
     external_id: '3',
+    source: 'Altivent',
     template_name: 'participation-request',
     type: 'participation',
     status: 'unread',
@@ -301,6 +319,7 @@ export const notificationData = [
   },
   {
     external_id: '4',
+    source: 'Altivent',
     template_name: 'participation-cancelled',
     type: 'participation',
     status: 'read',
@@ -320,6 +339,7 @@ export const notificationData = [
   },
   {
     external_id: '5',
+    source: 'Altivent',
     template_name: 'participation-updated',
     type: 'participation',
     status: 'unread',
@@ -339,6 +359,7 @@ export const notificationData = [
   },
   {
     external_id: '3',
+    source: 'Altivent',
     template_name: 'rating-received',
     type: 'event',
     status: 'read',
@@ -357,6 +378,7 @@ export const notificationData = [
   },
   {
     external_id: '2',
+    source: 'Altivent',
     template_name: 'participation-request',
     type: 'participation',
     status: 'unread',
@@ -376,6 +398,7 @@ export const notificationData = [
   },
   {
     external_id: '21',
+    source: 'Altivent',
     template_name: 'event-announcement',
     type: 'event',
     status: 'unread',
@@ -393,6 +416,7 @@ export const notificationData = [
   },
   {
     external_id: '22',
+    source: 'Altivent',
     template_name: 'welcome',
     type: 'system',
     status: 'read',
@@ -406,6 +430,7 @@ export const notificationData = [
   },
   {
     external_id: '23',
+    source: 'Altivent',
     template_name: 'event-reminder',
     type: 'participation',
     status: 'unread',
@@ -424,6 +449,7 @@ export const notificationData = [
   },
   {
     external_id: '24',
+    source: 'Altivent',
     template_name: 'event-updated',
     type: 'event',
     status: 'read',

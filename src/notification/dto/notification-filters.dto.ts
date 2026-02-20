@@ -5,6 +5,9 @@ export class NotificationFiltersDto {
   @IsString()
   externalId: string;
 
+  @IsString()
+  source: string;
+
   @IsOptional()
   @Type(() => Number)
   @IsInt()

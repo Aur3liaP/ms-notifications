@@ -26,10 +26,10 @@ export class NotificationService {
   async findByRecipientId(
     payload: NotificationFiltersDto,
   ): Promise<NotificationResponseDto[]> {
-    const { externalId, page = 1, limit = 10, status, type, channel } = payload;
+    const { externalId, page = 1, limit = 10, status, type, channel, source } = payload;
 
     const recipient =
-      await this.recipientService.findRecipientByExternalId(externalId);
+      await this.recipientService.findRecipient(externalId, source);
 
     const filter: Record<string, any> = { recipient_id: recipient._id };
     if (status) filter.status = status;
@@ -51,16 +51,17 @@ export class NotificationService {
       .findByIdAndUpdate(
         id,
         { status: 'read' },
-        { new: true }, // retourne le doc mis à jour
+        { returnDocument: 'after' }, // retourne le doc mis à jour
       )
+      .populate('template_id')
       .exec();
 
     return NotificationMapper.toDto(notification);
   }
 
-  async markAllAsRead(externalId: string): Promise<{ count: number }> {
+  async markAllAsRead(payload: { externalId: string; source: string }): Promise<{ count: number }> {
     const recipient =
-      await this.recipientService.findRecipientByExternalId(externalId);
+      await this.recipientService.findRecipient(payload.externalId, payload.source);
 
     const result = await this.notificationModel
       .updateMany(
@@ -72,9 +73,9 @@ export class NotificationService {
     return { count: result.modifiedCount };
   }
 
-  async getUnreadCount(externalId: string): Promise<{ count: number }> {
+  async getUnreadCount(payload: { externalId: string; source: string }): Promise<{ count: number }> {
     const recipient =
-      await this.recipientService.findRecipientByExternalId(externalId);
+      await this.recipientService.findRecipient(payload.externalId, payload.source);
     const count = await this.notificationModel
       .countDocuments({
         recipient_id: recipient._id.toString(),
@@ -87,8 +88,8 @@ export class NotificationService {
 
   async create(data: CreateNotificationDto): Promise<Notification> {
     // Check existance recipient
-    const recipient = await this.recipientService.findRecipientByExternalId(
-      data.external_id,
+    const recipient = await this.recipientService.findRecipient(
+      data.external_id, data.source
     );
 
     // Check existance template
@@ -107,23 +108,24 @@ export class NotificationService {
     // Check channel autorisé
     if (!recipient.preferences.enabledChannels.includes(template.channel)) {
       throw new RpcBadRequestException(
-        `Channel "${template.channel}" is not enabled for recipient ${data.external_id}. ` + // ← template.channel, pas data.channel
+        `Channel "${template.channel}" is not enabled for recipient ${data.external_id}. ` +
           `Allowed channels: ${recipient.preferences.enabledChannels.join(', ')}`,
       );
     }
 
     // Check  type notif autorisées
-    if (!recipient.preferences.enabledTypes.includes(data.type)) {
+    if (!recipient.preferences.enabledTypes.includes(template.type)) {
       throw new RpcBadRequestException(
-        `Type "${data.type}" is not enabled for recipient ${data.external_id}`,
+        `Type "${template.type}" is not enabled for recipient ${data.external_id}`,
       );
     }
 
     const notification = await this.notificationModel.create({
       recipient_id: recipient._id.toString(),
       template_id: template._id.toString(),
-      type: data.type,
-      priority: data.priority,
+      source : data.source,
+      type: template.type,
+      priority: data.priority || 'medium',
       status: data.status || 'unread',
       channel: template.channel,
       metadata: data.metadata,

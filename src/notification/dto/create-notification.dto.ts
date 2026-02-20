@@ -14,10 +14,10 @@ export class CreateNotificationDto {
   template_name: string;
 
   @IsString()
-  type: string;
+  source: string;
 
   @IsEnum(['low', 'medium', 'high'])
-  priority: string;
+  priority?: string;
 
   @IsEnum(['sent', 'delivered', 'read', 'unread', 'failed'])
   status?: string;

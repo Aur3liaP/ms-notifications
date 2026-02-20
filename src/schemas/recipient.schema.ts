@@ -6,10 +6,16 @@ export type RecipientDocument = HydratedDocument<Recipient>;
 @Schema({ timestamps: true })
 export class Recipient {
   @Prop({ required: true })
-  name: string;
+  external_id: string;
 
   @Prop({ required: true })
-  external_id: string;
+  source: string;
+
+  @Prop()
+  firstname: string;
+
+  @Prop()
+  name: string;
 
   @Prop({
     type: {
@@ -27,3 +33,8 @@ export class Recipient {
 }
 
 export const RecipientSchema = SchemaFactory.createForClass(Recipient);
+
+RecipientSchema.index(
+  { source: 1, external_id: 1 },
+  { unique: true }
+);
