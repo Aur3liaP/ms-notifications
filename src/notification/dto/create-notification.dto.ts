@@ -25,7 +25,7 @@ export class CreateNotificationDto {
   @IsObject()
   metadata: {
     sourceType: string;
-    source_id: string;
+    source_id?: string;
     urlAction?: string;
     extra?: object;
   };

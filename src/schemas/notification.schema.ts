@@ -40,7 +40,7 @@ export class Notification {
   @Prop({ type: Object })
   metadata: {
     sourceType: string; 
-    source_id: string;
+    source_id?: string;
     urlAction?: string;
     extra?: object; // données libres si besoin ex:eventName,dates...
   };
