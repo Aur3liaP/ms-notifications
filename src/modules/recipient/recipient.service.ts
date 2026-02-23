@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { RpcNotFoundException } from 'src/common/rpc-exceptions';
-import { Recipient, RecipientDocument } from 'src/schemas/recipient.schema';
+import { RpcNotFoundException } from 'src/common/exceptions/rpc-exceptions';
+import {
+  Recipient,
+  RecipientDocument,
+} from 'src/database/schemas/recipient.schema';
 import { CreateRecipientDto } from './dto/create-recipient.dto';
 
 @Injectable()
@@ -14,13 +17,16 @@ export class RecipientService {
 
   async findRecipient(
     externalId: string,
-    source : string
+    source: string,
   ): Promise<Recipient & { _id: Types.ObjectId }> {
     const recipient = await this.recipientModel.findOne({
-      external_id: externalId.toString(), source
+      external_id: externalId.toString(),
+      source,
     });
     if (!recipient)
-      throw new RpcNotFoundException(`Recipient ${externalId} not found for source ${source}`);
+      throw new RpcNotFoundException(
+        `Recipient ${externalId} not found for source ${source}`,
+      );
     return recipient;
   }
 
@@ -38,7 +44,7 @@ export class RecipientService {
   }
 
   async findAllBySource(source: string): Promise<Recipient[]> {
-    return this.recipientModel.find({source}).exec();
+    return this.recipientModel.find({ source }).exec();
   }
 
   async findAll(): Promise<Recipient[]> {

@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { RecipientService } from './recipient.service';
-import { Recipient } from 'src/schemas/recipient.schema';
+import { Recipient } from 'src/database/schemas/recipient.schema';
 import { CreateRecipientDto } from './dto/create-recipient.dto';
 
 @Controller()
@@ -14,7 +14,7 @@ export class RecipientController {
   }
 
   @MessagePattern('GET_RECIPIENTS_BY_SOURCE')
-  async getAllBySource(source : string): Promise<Recipient[]> {
+  async getAllBySource(source: string): Promise<Recipient[]> {
     return this.recipientService.findAllBySource(source);
   }
 

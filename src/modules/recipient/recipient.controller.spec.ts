@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RecipientController } from './recipient.controller';
 import { RecipientService } from './recipient.service';
-import { mockRecipientService } from '../utils/__test__/mock';
+import { mockRecipientService } from '../common/utils/__test__/mock';
 
 describe('RecipientController', () => {
   let controller: RecipientController;

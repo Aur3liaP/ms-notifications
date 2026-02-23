@@ -25,7 +25,7 @@ export class CreateRecipientDto {
 
   @IsString()
   @IsOptional()
-  name?: string;
+  lastname?: string;
 
   @IsOptional()
   @Type(() => PreferencesDto)

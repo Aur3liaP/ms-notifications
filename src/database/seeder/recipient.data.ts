@@ -3,7 +3,7 @@ export const recipientData = [
     external_id: '2',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Organisateur 1',
+    lastname: 'Organisateur 1',
     preferences: {
       enabledChannels: ['inApp', 'email'],
       enabledTypes: ['event', 'participation', 'system'],
@@ -13,7 +13,7 @@ export const recipientData = [
     external_id: '3',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Organisateur 2',
+    lastname: 'Organisateur 2',
     preferences: {
       enabledChannels: ['inApp', 'email'],
       enabledTypes: ['event', 'participation', 'system'],
@@ -23,7 +23,7 @@ export const recipientData = [
     external_id: '4',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Organisateur 3',
+    lastname: 'Organisateur 3',
     preferences: {
       enabledChannels: ['inApp'],
       enabledTypes: ['event', 'participation', 'system'],
@@ -33,7 +33,7 @@ export const recipientData = [
     external_id: '5',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Organisateur 4',
+    lastname: 'Organisateur 4',
     preferences: {
       enabledChannels: ['inApp', 'email'],
       enabledTypes: ['event', 'participation', 'system'],
@@ -43,7 +43,7 @@ export const recipientData = [
     external_id: '6',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 1',
+    lastname: 'Bénévole 1',
     preferences: {
       enabledChannels: ['inApp', 'email'],
       enabledTypes: ['event', 'participation', 'system'],
@@ -53,7 +53,7 @@ export const recipientData = [
     external_id: '7',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 2',
+    lastname: 'Bénévole 2',
     preferences: {
       enabledChannels: ['inApp'],
       enabledTypes: ['event', 'participation', 'system'],
@@ -63,7 +63,7 @@ export const recipientData = [
     external_id: '8',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 3',
+    lastname: 'Bénévole 3',
     preferences: {
       enabledChannels: ['inApp', 'email'],
       enabledTypes: ['event', 'system'],
@@ -73,7 +73,7 @@ export const recipientData = [
     external_id: '9',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 4',
+    lastname: 'Bénévole 4',
     preferences: {
       enabledChannels: ['inApp'],
       enabledTypes: ['event', 'system'],
@@ -83,7 +83,7 @@ export const recipientData = [
     external_id: '10',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 5',
+    lastname: 'Bénévole 5',
     preferences: {
       enabledChannels: ['inApp', 'email'],
       enabledTypes: ['event', 'participation', 'system'],
@@ -93,14 +93,14 @@ export const recipientData = [
     external_id: '11',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 6',
+    lastname: 'Bénévole 6',
     preferences: { enabledChannels: ['inApp'], enabledTypes: ['system'] },
   },
   {
     external_id: '12',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 7',
+    lastname: 'Bénévole 7',
     preferences: {
       enabledChannels: ['inApp', 'email'],
       enabledTypes: ['event', 'participation', 'system'],
@@ -110,7 +110,7 @@ export const recipientData = [
     external_id: '13',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 8',
+    lastname: 'Bénévole 8',
     preferences: {
       enabledChannels: ['inApp'],
       enabledTypes: ['event', 'participation', 'system'],
@@ -120,7 +120,7 @@ export const recipientData = [
     external_id: '14',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 9',
+    lastname: 'Bénévole 9',
     preferences: {
       enabledChannels: ['inApp', 'email'],
       enabledTypes: ['event', 'system', 'participation'],
@@ -130,7 +130,7 @@ export const recipientData = [
     external_id: '15',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 10',
+    lastname: 'Bénévole 10',
     preferences: {
       enabledChannels: ['inApp'],
       enabledTypes: ['participation', 'event', 'system'],
@@ -140,7 +140,7 @@ export const recipientData = [
     external_id: '16',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 11',
+    lastname: 'Bénévole 11',
     preferences: {
       enabledChannels: ['inApp', 'email'],
       enabledTypes: ['event', 'participation', 'system'],
@@ -150,7 +150,7 @@ export const recipientData = [
     external_id: '17',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 12',
+    lastname: 'Bénévole 12',
     preferences: {
       enabledChannels: ['inApp'],
       enabledTypes: ['event', 'system'],
@@ -160,7 +160,7 @@ export const recipientData = [
     external_id: '18',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 13',
+    lastname: 'Bénévole 13',
     preferences: {
       enabledChannels: ['inApp', 'email'],
       enabledTypes: ['event', 'participation', 'system'],
@@ -170,7 +170,7 @@ export const recipientData = [
     external_id: '19',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 14',
+    lastname: 'Bénévole 14',
     preferences: {
       enabledChannels: ['inApp'],
       enabledTypes: ['participation', 'system'],
@@ -180,7 +180,7 @@ export const recipientData = [
     external_id: '20',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 15',
+    lastname: 'Bénévole 15',
     preferences: {
       enabledChannels: ['inApp', 'email'],
       enabledTypes: ['event', 'participation', 'system'],
@@ -190,7 +190,7 @@ export const recipientData = [
     external_id: '21',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 16',
+    lastname: 'Bénévole 16',
     preferences: {
       enabledChannels: ['inApp'],
       enabledTypes: ['event', 'system'],
@@ -200,7 +200,7 @@ export const recipientData = [
     external_id: '22',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 17',
+    lastname: 'Bénévole 17',
     preferences: {
       enabledChannels: ['inApp', 'email'],
       enabledTypes: ['system'],
@@ -210,7 +210,7 @@ export const recipientData = [
     external_id: '23',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 18',
+    lastname: 'Bénévole 18',
     preferences: {
       enabledChannels: ['inApp'],
       enabledTypes: ['event', 'participation', 'system'],
@@ -220,7 +220,7 @@ export const recipientData = [
     external_id: '24',
     source: 'Altivent',
     firstname: 'Roger',
-    name: 'Bénévole 19',
+    lastname: 'Bénévole 19',
     preferences: {
       enabledChannels: ['inApp', 'email'],
       enabledTypes: ['event', 'system'],

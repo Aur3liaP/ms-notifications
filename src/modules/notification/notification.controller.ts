@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { NotificationService } from './notification.service';
-import { Notification } from 'src/schemas/notification.schema';
+import { Notification } from 'src/database/schemas/notification.schema';
 import { NotificationResponseDto } from './dto/notification-response.dto';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
@@ -20,19 +20,23 @@ export class NotificationController {
   }
 
   @MessagePattern('MARK_AS_READ')
-  async markAsRead(@Payload() id: string): Promise<NotificationResponseDto | null> {
+  async markAsRead(
+    @Payload() id: string,
+  ): Promise<NotificationResponseDto | null> {
     return this.notificationService.markAsRead(id);
   }
 
   @MessagePattern('MARK_ALL_AS_READ')
   async markAllAsRead(
-    @Payload() payload: { externalId: string; source: string }
+    @Payload() payload: { externalId: string; source: string },
   ): Promise<{ count: number }> {
     return this.notificationService.markAllAsRead(payload);
   }
 
   @MessagePattern('GET_UNREAD_COUNT')
-  async getUnreadCount(@Payload() payload: { externalId: string; source: string }) {
+  async getUnreadCount(
+    @Payload() payload: { externalId: string; source: string },
+  ) {
     return this.notificationService.getUnreadCount(payload);
   }
 

@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../app.module';
-import { RecipientService } from '../recipient/recipient.service';
-import { TemplateService } from '../template/template.service';
-import { NotificationService } from '../notification/notification.service';
+import { AppModule } from '../../app.module';
+import { NotificationService } from '../../modules/notification/notification.service';
 import { templateData } from './template.data';
 import { recipientData } from './recipient.data';
 import { notificationData } from './notification.data';
+import { RecipientService } from 'src/modules/recipient/recipient.service';
+import { TemplateService } from 'src/modules/template/template.service';
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -36,14 +36,16 @@ async function bootstrap() {
 
   // 4. Create a map for quick lookup
   const recipientMap = new Map(
-    recipients.map((r : any) => [`${r.source}:${r.external_id}`, r._id]),
+    recipients.map((r: any) => [`${r.source}:${r.external_id}`, r._id]),
   );
-  const templateMap = new Map(templates.map((t : any) => [t.name, t._id]));
+  const templateMap = new Map(templates.map((t: any) => [t.name, t._id]));
 
   // 5. Seed Notifications
   const notifications = await Promise.all(
     notificationData.map((data) => {
-      const recipient_id = recipientMap.get(`${data.source}:${data.external_id}`);
+      const recipient_id = recipientMap.get(
+        `${data.source}:${data.external_id}`,
+      );
       const template_id = templateMap.get(data.template_name);
 
       if (!recipient_id || !template_id) {

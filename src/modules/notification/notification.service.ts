@@ -1,18 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { RecipientService } from 'src/recipient/recipient.service';
 import {
   Notification,
   NotificationDocument,
-} from 'src/schemas/notification.schema';
+} from 'src/database/schemas/notification.schema';
 import { NotificationFiltersDto } from './dto/notification-filters.dto';
 import { NotificationMapper } from './mapper/notification.mapper';
 import { NotificationResponseDto } from './dto/notification-response.dto';
-import { TemplateService } from 'src/template/template.service';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
-import { RpcBadRequestException, RpcNotFoundException } from 'src/common/rpc-exceptions';
+import {
+  RpcBadRequestException,
+  RpcNotFoundException,
+} from 'src/common/exceptions/rpc-exceptions';
+import { RecipientService } from '../recipient/recipient.service';
+import { TemplateService } from '../template/template.service';
 
 @Injectable()
 export class NotificationService {
@@ -26,10 +29,20 @@ export class NotificationService {
   async findByRecipientId(
     payload: NotificationFiltersDto,
   ): Promise<NotificationResponseDto[]> {
-    const { externalId, page = 1, limit = 10, status, type, channel, source } = payload;
+    const {
+      externalId,
+      page = 1,
+      limit = 10,
+      status,
+      type,
+      channel,
+      source,
+    } = payload;
 
-    const recipient =
-      await this.recipientService.findRecipient(externalId, source);
+    const recipient = await this.recipientService.findRecipient(
+      externalId,
+      source,
+    );
 
     const filter: Record<string, any> = { recipient_id: recipient._id };
     if (status) filter.status = status;
@@ -59,9 +72,14 @@ export class NotificationService {
     return NotificationMapper.toDto(notification);
   }
 
-  async markAllAsRead(payload: { externalId: string; source: string }): Promise<{ count: number }> {
-    const recipient =
-      await this.recipientService.findRecipient(payload.externalId, payload.source);
+  async markAllAsRead(payload: {
+    externalId: string;
+    source: string;
+  }): Promise<{ count: number }> {
+    const recipient = await this.recipientService.findRecipient(
+      payload.externalId,
+      payload.source,
+    );
 
     const result = await this.notificationModel
       .updateMany(
@@ -73,9 +91,14 @@ export class NotificationService {
     return { count: result.modifiedCount };
   }
 
-  async getUnreadCount(payload: { externalId: string; source: string }): Promise<{ count: number }> {
-    const recipient =
-      await this.recipientService.findRecipient(payload.externalId, payload.source);
+  async getUnreadCount(payload: {
+    externalId: string;
+    source: string;
+  }): Promise<{ count: number }> {
+    const recipient = await this.recipientService.findRecipient(
+      payload.externalId,
+      payload.source,
+    );
     const count = await this.notificationModel
       .countDocuments({
         recipient_id: recipient._id.toString(),
@@ -89,13 +112,16 @@ export class NotificationService {
   async create(data: CreateNotificationDto): Promise<Notification> {
     // Check existance recipient
     const recipient = await this.recipientService.findRecipient(
-      data.external_id, data.source
+      data.external_id,
+      data.source,
     );
 
     // Check existance template
-    const template = await this.templateService.findByName(data.template_name)
+    const template = await this.templateService.findByName(data.template_name);
     if (!template) {
-      throw new RpcNotFoundException(`Template ${data.template_name} not found`);
+      throw new RpcNotFoundException(
+        `Template ${data.template_name} not found`,
+      );
     }
 
     if (template.metadata?.variables) {
@@ -123,7 +149,7 @@ export class NotificationService {
     const notification = await this.notificationModel.create({
       recipient_id: recipient._id.toString(),
       template_id: template._id.toString(),
-      source : data.source,
+      source: data.source,
       type: template.type,
       priority: data.priority || 'medium',
       status: data.status || 'unread',
@@ -159,7 +185,8 @@ export class NotificationService {
       .findById(id)
       .populate('template_id')
       .exec();
-    if (!notification) throw new RpcNotFoundException(`Notification ${id} not found`);
+    if (!notification)
+      throw new RpcNotFoundException(`Notification ${id} not found`);
     return NotificationMapper.toDto(notification);
   }
 

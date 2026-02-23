@@ -1,8 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { RpcBadRequestException, RpcNotFoundException } from 'src/common/rpc-exceptions';
-import { Template, TemplateDocument } from 'src/schemas/template.schema';
+import {
+  RpcBadRequestException,
+  RpcNotFoundException,
+} from 'src/common/exceptions/rpc-exceptions';
+import {
+  Template,
+  TemplateDocument,
+} from 'src/database/schemas/template.schema';
 
 @Injectable()
 export class TemplateService {

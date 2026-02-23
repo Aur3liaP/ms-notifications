@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { TemplateService } from './template.service';
-import { Template } from 'src/schemas/template.schema';
+import { Template } from 'src/database/schemas/template.schema';
 
 @Controller()
 export class TemplateController {

@@ -12,10 +12,10 @@ export class Recipient {
   source: string;
 
   @Prop()
-  firstname: string;
+  firstname?: string;
 
   @Prop()
-  name: string;
+  lastname?: string;
 
   @Prop({
     type: {
